@@ -53,33 +53,37 @@ class MakerAppImage extends maker_base_1.default {
     isSupportedOnCurrentPlatform() {
         return process.platform === "linux";
     }
-    make({ dir, // '/home/build/Software/monorepo/packages/electron/out/name-linux-x64'
+    make({ dir, // '/home/build/Software/monorepo/packages/electron/out/canary/name-linux-x64'
     appName, // 'name'
-    makeDir, // '/home/build/Software/monorepo/packages/electron/out/make',
+    makeDir, // '/home/build/Software/monorepo/packages/electron/out/canary/make',
     targetArch, // 'x64'
     packageJSON, targetPlatform, //'linux',
-    forgeConfig }) {
+    forgeConfig, }) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             const executableName = forgeConfig.packagerConfig.executableName || appName;
             // Check for any optional configuration data passed in from forge config, specific to this maker.
             let config;
-            const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === makerPackageName);
+            const maker = forgeConfig.makers.find((maker) => isIForgeResolvableMaker(maker) && maker.name === makerPackageName);
             if (maker !== undefined && isIForgeResolvableMaker(maker)) {
                 config = maker.config;
             }
             const appFileName = `${appName}-${packageJSON.version}.AppImage`;
             const appPath = path_1.default.join(makeDir, appFileName);
+            // translate macos protocols to linux mime types.
+            const mimeTypes = ((_b = (_a = forgeConfig.packagerConfig) === null || _a === void 0 ? void 0 : _a.protocols) !== null && _b !== void 0 ? _b : []).flatMap((p) => p.schemes.map((s) => "x-scheme-handler/" + s.toLowerCase()));
             // construct the desktop file.
             const desktopMeta = {
                 Name: appName,
-                Exec: executableName,
+                Exec: `${executableName} %u`,
                 Terminal: "false",
                 Type: "Application",
-                Icon: executableName,
+                Icon: executableName !== null && executableName !== void 0 ? executableName : config === null || config === void 0 ? void 0 : config.icon,
                 StartupWMClass: packageJSON.productName,
                 "X-AppImage-Version": packageJSON.version,
                 Comment: packageJSON.description,
-                Categories: "Utility"
+                Categories: "Utility",
+                MimeType: mimeTypes.join(";"),
             };
             let desktopEntry = `[Desktop Entry]`;
             for (const name of Object.keys(desktopMeta)) {
@@ -87,14 +91,14 @@ class MakerAppImage extends maker_base_1.default {
             }
             desktopEntry += "\n";
             // icons don't seem to work in AppImages anyway. this is just the default taken from the old AppImage maker.
-            const iconPath = path_1.default.join(dir, "../..", "node_modules/app-builder-lib/templates/icons/electron-linux");
+            const iconPath = path_1.default.join(dir, "../../..", "node_modules/app-builder-lib/templates/icons/electron-linux");
             const icons = [
                 { file: `${iconPath}/16x16.png`, size: 16 },
                 { file: `${iconPath}/32x32.png`, size: 32 },
                 { file: `${iconPath}/48x48.png`, size: 48 },
                 { file: `${iconPath}/64x64.png`, size: 64 },
                 { file: `${iconPath}/128x128.png`, size: 128 },
-                { file: `${iconPath}/256x256.png`, size: 256 }
+                { file: `${iconPath}/256x256.png`, size: 256 },
             ];
             const stageDir = path_1.default.join(makeDir, "__appImage-x64");
             if (!(0, fs_1.existsSync)(makeDir)) {
@@ -107,7 +111,7 @@ class MakerAppImage extends maker_base_1.default {
             // if the user passed us a chmodChromeSandbox parameter, use that to modify the permissions of chrome-sandbox.
             // this sets up the ability to run the application conditionally with --no-sandbox on select systems.
             if (config !== undefined && config.chmodChromeSandbox !== undefined) {
-                yield (0, child_process_1.exec)(`chmod ${config.chmodChromeSandbox} ${path_1.default.join(dir, 'chrome-sandbox')}`);
+                yield (0, child_process_1.exec)(`chmod ${config.chmodChromeSandbox} ${path_1.default.join(dir, "chrome-sandbox")}`);
             }
             const args = [
                 "appimage",
@@ -126,8 +130,8 @@ class MakerAppImage extends maker_base_1.default {
                     desktopEntry: desktopEntry,
                     executableName: executableName,
                     icons: icons,
-                    fileAssociations: []
-                })
+                    fileAssociations: [],
+                }),
             ];
             // the --template option allows us to replace AppRun bash script with a custom version, e.g. a libstdc++ bootstrapper.
             if (config !== undefined && config.template) {

@@ -5,10 +5,10 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
     name: string;
     defaultPlatforms: ForgePlatform[];
     isSupportedOnCurrentPlatform(): boolean;
-    make({ dir, // '/home/build/Software/monorepo/packages/electron/out/name-linux-x64'
+    make({ dir, // '/home/build/Software/monorepo/packages/electron/out/canary/name-linux-x64'
     appName, // 'name'
-    makeDir, // '/home/build/Software/monorepo/packages/electron/out/make',
+    makeDir, // '/home/build/Software/monorepo/packages/electron/out/canary/make',
     targetArch, // 'x64'
     packageJSON, targetPlatform, //'linux',
-    forgeConfig }: MakerOptions): Promise<string[]>;
+    forgeConfig, }: MakerOptions): Promise<string[]>;
 }
