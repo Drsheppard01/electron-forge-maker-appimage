@@ -40,7 +40,7 @@ const path_1 = __importDefault(require("path"));
 const appBuilder = __importStar(require("app-builder-lib/out/util/appBuilder"));
 const fs_1 = require("fs");
 const child_process_1 = require("child_process");
-const makerPackageName = "@pengx17/electron-forge-maker-appimage";
+const makerPackageName = "electron-forge-maker-appimage";
 const isIForgeResolvableMaker = (maker) => {
     return maker.hasOwnProperty("name");
 };
@@ -91,7 +91,7 @@ class MakerAppImage extends maker_base_1.default {
             }
             desktopEntry += "\n";
             // icons don't seem to work in AppImages anyway. this is just the default taken from the old AppImage maker.
-            const iconPath = path_1.default.join(dir, "../../..", "node_modules/app-builder-lib/templates/icons/electron-linux");
+            const iconPath = path_1.default.join(path_1.default.dirname(require.resolve("app-builder-lib")), "../templates/icons/electron-linux");
             const icons = [
                 { file: `${iconPath}/16x16.png`, size: 16 },
                 { file: `${iconPath}/32x32.png`, size: 32 },
