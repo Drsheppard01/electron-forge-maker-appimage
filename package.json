@@ -1,5 +1,5 @@
 {
-  "name": "@pengx17/electron-forge-maker-appimage",
+  "name": "electron-forge-maker-appimage",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",

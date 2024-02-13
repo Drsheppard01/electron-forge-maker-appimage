@@ -40,7 +40,7 @@ const path_1 = __importDefault(require("path"));
 const appBuilder = __importStar(require("app-builder-lib/out/util/appBuilder"));
 const fs_1 = require("fs");
 const child_process_1 = require("child_process");
-const makerPackageName = "electron-forge-maker-appimage";
+const makerPackageName = "@pengx17/electron-forge-maker-appimage";
 const isIForgeResolvableMaker = (maker) => {
     return maker.hasOwnProperty("name");
 };
@@ -78,7 +78,7 @@ class MakerAppImage extends maker_base_1.default {
                 Exec: `${executableName} %u`,
                 Terminal: "false",
                 Type: "Application",
-                Icon: executableName !== null && executableName !== void 0 ? executableName : config === null || config === void 0 ? void 0 : config.icon,
+                Icon: executableName,
                 StartupWMClass: packageJSON.productName,
                 "X-AppImage-Version": packageJSON.version,
                 Comment: packageJSON.description,
