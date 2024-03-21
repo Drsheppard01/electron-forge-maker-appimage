@@ -40,7 +40,7 @@ const path_1 = __importDefault(require("path"));
 const appBuilder = __importStar(require("app-builder-lib/out/util/appBuilder"));
 const fs_1 = require("fs");
 const child_process_1 = require("child_process");
-const makerPackageName = "electron-forge-maker-appimage";
+const makerPackageName = "@pengx17/electron-forge-maker-appimage";
 const isIForgeResolvableMaker = (maker) => {
     return maker.hasOwnProperty("name");
 };
@@ -75,7 +75,7 @@ class MakerAppImage extends maker_base_1.default {
             // construct the desktop file.
             const desktopMeta = {
                 Name: appName,
-                Exec: `${executableName} %u`,
+                Exec: `${executableName} %u --enable-features=UseOzonePlatform --ozone-platform=wayland`,
                 Terminal: "false",
                 Type: "Application",
                 Icon: executableName,

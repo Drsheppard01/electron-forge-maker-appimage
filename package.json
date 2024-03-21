@@ -1,6 +1,6 @@
 {
-  "name": "electron-forge-maker-appimage",
-  "version": "1.0.0",
+  "name": "@pengx17/electron-forge-maker-appimage",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -9,9 +9,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@electron-forge/maker-base": "^7.1.0",
-    "@electron-forge/shared-types": "^7.1.0",
-    "app-builder-lib": "^21.2.0"
+    "@electron-forge/maker-base": "^7.3.0",
+    "@electron-forge/shared-types": "^7.3.0",
+    "app-builder-lib": "^24.13.3"
   },
   "devDependencies": {
     "enquirer": "^2.4.1",

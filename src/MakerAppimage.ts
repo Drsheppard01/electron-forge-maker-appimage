@@ -10,7 +10,7 @@ import { MakerAppImageConfig } from "./Config";
 import { mkdirSync, existsSync, rmdirSync } from "fs";
 import { exec } from "child_process";
 
-const makerPackageName = "electron-forge-maker-appimage";
+const makerPackageName = "@pengx17/electron-forge-maker-appimage";
 
 interface AppImageForgeConfig {
   template?: string;
@@ -66,7 +66,7 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
     // construct the desktop file.
     const desktopMeta: { [parameter: string]: string } = {
       Name: appName,
-      Exec: `${executableName} %u`,
+      Exec: `${executableName} %u --enable-features=UseOzonePlatform --ozone-platform=wayland`,
       Terminal: "false",
       Type: "Application",
       Icon: executableName,
