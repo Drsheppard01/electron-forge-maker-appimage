@@ -59,7 +59,7 @@ class MakerAppImage extends maker_base_1.default {
     targetArch, // 'x64'
     packageJSON, targetPlatform, //'linux',
     forgeConfig, }) {
-        var _a, _b;
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             const executableName = forgeConfig.packagerConfig.executableName || appName;
             // Check for any optional configuration data passed in from forge config, specific to this maker.
@@ -75,7 +75,7 @@ class MakerAppImage extends maker_base_1.default {
             // construct the desktop file.
             const desktopMeta = {
                 Name: appName,
-                Exec: `${executableName} %u --enable-features=UseOzonePlatform --ozone-platform=wayland`,
+                Exec: `${executableName} --enable-features=UseOzonePlatform --ozone-platform=wayland %u`,
                 Terminal: "false",
                 Type: "Application",
                 Icon: executableName,
@@ -92,7 +92,7 @@ class MakerAppImage extends maker_base_1.default {
             desktopEntry += "\n";
             // icons don't seem to work in AppImages anyway. this is just the default taken from the old AppImage maker.
             const iconPath = path_1.default.join(path_1.default.dirname(require.resolve("app-builder-lib")), "../templates/icons/electron-linux");
-            const icons = [
+            const icons = (_c = config === null || config === void 0 ? void 0 : config.icons) !== null && _c !== void 0 ? _c : [
                 { file: `${iconPath}/16x16.png`, size: 16 },
                 { file: `${iconPath}/32x32.png`, size: 32 },
                 { file: `${iconPath}/48x48.png`, size: 48 },

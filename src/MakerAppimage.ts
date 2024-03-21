@@ -15,6 +15,7 @@ const makerPackageName = "@pengx17/electron-forge-maker-appimage";
 interface AppImageForgeConfig {
   template?: string;
   chmodChromeSandbox?: string;
+  icons?: { file: string; size: number }[];
 }
 
 const isIForgeResolvableMaker = (
@@ -88,7 +89,7 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
       path.dirname(require.resolve("app-builder-lib")),
       "../templates/icons/electron-linux"
     );
-    const icons = [
+    const icons = config?.icons ?? [
       { file: `${iconPath}/16x16.png`, size: 16 },
       { file: `${iconPath}/32x32.png`, size: 32 },
       { file: `${iconPath}/48x48.png`, size: 48 },
