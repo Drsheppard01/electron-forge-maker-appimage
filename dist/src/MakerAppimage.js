@@ -75,7 +75,7 @@ class MakerAppImage extends maker_base_1.default {
             // construct the desktop file.
             const desktopMeta = {
                 Name: appName,
-                Exec: `${executableName} --enable-features=UseOzonePlatform --ozone-platform=wayland %u`,
+                Exec: `env ELECTRON_OZONE_PLATFORM_HINT=auto ${executableName} %u`,
                 Terminal: "false",
                 Type: "Application",
                 Icon: executableName,
