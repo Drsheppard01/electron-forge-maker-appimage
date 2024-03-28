@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.patchAppImage = void 0;
 const child_process_1 = require("child_process");
 const path_1 = __importDefault(require("path"));
-const scriptPath = path_1.default.resolve(__dirname, "../scripts/patch-apprun.sh");
+const scriptPath = path_1.default.resolve(__dirname, "../../scripts/patch-apprun.sh");
 function patchAppImage(appFileName) {
     return __awaiter(this, void 0, void 0, function* () {
         (0, child_process_1.execSync)(`bash ${scriptPath} ${appFileName}`);

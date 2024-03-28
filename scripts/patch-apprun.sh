@@ -1,21 +1,29 @@
 # Adopted from https://gist.github.com/neilcsmith-net/69bcb23bcc6698815438dc4e3df6caa3
 
+# INPUT_APPIMAGE must be absolute path
 INPUT_APPIMAGE=$1
 
 # System architecture to create AppImage for - see options at https://github.com/AppImage/AppImageKit/releases/continuous/
 SYSTEM_ARCH="x86_64"
 APPIMAGETOOL_URL="https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$SYSTEM_ARCH.AppImage"
 
+TMP_DIR=$(mktemp -d)
+
+cd $TMP_DIR
+cp $INPUT_APPIMAGE .
+
+# get the filename of the AppImage
+APP_IMAGE_TMP=$(basename -- "$INPUT_APPIMAGE")
+
+echo $APP_IMAGE_TMP
+
+# Extract AppImage for the INPUT_APPIMAGE, which will be put into squashfs-root
+chmod +x "$APP_IMAGE_TMP"
+"./$APP_IMAGE_TMP" --appimage-extract
+
 # Download appimagetool
 wget -c "$APPIMAGETOOL_URL" -O appimagetool
 chmod +x appimagetool
-
-# cleanup squashfs-root directory
-rm -rf ./squashfs-root
-
-# Extract AppImage for the INPUT_APPIMAGE, which will be put into squashfs-root
-chmod +x "$INPUT_APPIMAGE"
-"$INPUT_APPIMAGE" --appimage-extract
 
 # Patch the AppRun script to add a new environment variable 
 # ELECTRON_OZONE_PLATFORM_HINT=auto
@@ -41,6 +49,8 @@ chmod +x "$file"
 
 # AppRun patched. Repack the AppImage
 ./appimagetool ./squashfs-root/ "$INPUT_APPIMAGE"
+
+rm -rf $TMP_DIR
 
 # Done
 echo "patch-app-image.sh: Done."
