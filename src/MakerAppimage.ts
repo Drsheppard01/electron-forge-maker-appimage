@@ -9,6 +9,7 @@ import * as appBuilder from "app-builder-lib/out/util/appBuilder";
 import { MakerAppImageConfig } from "./Config";
 import { mkdirSync, existsSync, rmdirSync } from "fs";
 import { exec } from "child_process";
+import { patchAppImage } from "./patch-apprun";
 
 const makerPackageName = "@pengx17/electron-forge-maker-appimage";
 
@@ -67,7 +68,7 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
     // construct the desktop file.
     const desktopMeta: { [parameter: string]: string } = {
       Name: appName,
-      Exec: `env ELECTRON_OZONE_PLATFORM_HINT=auto ${executableName} %u`,
+      Exec: `${executableName} %u`,
       Terminal: "false",
       Type: "Application",
       Icon: executableName,
@@ -145,6 +146,8 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
     }
 
     const result = await appBuilder.executeAppBuilderAsJson(args);
+
+    await patchAppImage(appPath);
 
     return [appPath];
   }

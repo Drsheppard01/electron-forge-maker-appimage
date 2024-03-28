@@ -40,6 +40,7 @@ const path_1 = __importDefault(require("path"));
 const appBuilder = __importStar(require("app-builder-lib/out/util/appBuilder"));
 const fs_1 = require("fs");
 const child_process_1 = require("child_process");
+const patch_apprun_1 = require("./patch-apprun");
 const makerPackageName = "@pengx17/electron-forge-maker-appimage";
 const isIForgeResolvableMaker = (maker) => {
     return maker.hasOwnProperty("name");
@@ -75,7 +76,7 @@ class MakerAppImage extends maker_base_1.default {
             // construct the desktop file.
             const desktopMeta = {
                 Name: appName,
-                Exec: `env ELECTRON_OZONE_PLATFORM_HINT=auto ${executableName} %u`,
+                Exec: `${executableName} %u`,
                 Terminal: "false",
                 Type: "Application",
                 Icon: executableName,
@@ -139,6 +140,7 @@ class MakerAppImage extends maker_base_1.default {
                 args.push(config.template);
             }
             const result = yield appBuilder.executeAppBuilderAsJson(args);
+            yield (0, patch_apprun_1.patchAppImage)(appPath);
             return [appPath];
         });
     }
