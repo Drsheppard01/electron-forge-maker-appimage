@@ -68,7 +68,7 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
     // construct the desktop file.
     const desktopMeta: { [parameter: string]: string } = {
       Name: appName,
-      Exec: `${executableName} %u`,
+      Exec: `${executableName} --no-sandbox --disable-setuid-sandbox %u`,
       Terminal: "false",
       Type: "Application",
       Icon: executableName,
