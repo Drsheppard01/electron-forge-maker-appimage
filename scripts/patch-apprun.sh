@@ -5,7 +5,7 @@ INPUT_APPIMAGE=$1
 
 # System architecture to create AppImage for - see options at https://github.com/AppImage/AppImageKit/releases/continuous/
 SYSTEM_ARCH="x86_64"
-APPIMAGETOOL_URL="https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$SYSTEM_ARCH.AppImage"
+APPIMAGETOOL_URL="https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$SYSTEM_ARCH.AppImage"
 
 TMP_DIR=$(mktemp -d)
 
